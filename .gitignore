@@ -1,0 +1,12 @@
+# Catkin 编译产物
+build/
+devel/
+install/
+build_isolated/
+devel_isolated/
+install_isolated/
+logs/
+
+# Python
+__pycache__/
+*.py[cod]

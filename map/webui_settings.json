@@ -1,0 +1,7 @@
+{
+  "teleop_v": 0.25,
+  "teleop_w": 0.8,
+  "nav_v": 0.27,
+  "nav_w": 0.4,
+  "keyboard": false
+}

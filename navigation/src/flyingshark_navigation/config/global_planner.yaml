@@ -1,0 +1,14 @@
+GlobalPlanner:
+  allow_unknown: true
+  default_tolerance: 0.12
+  use_dijkstra: true
+  # 平滑梯度在长路径上会走到势场平地或地图边上，搜到了目标却抽不出路径。
+  # 改成沿栅格回溯，远航点才能稳定出路径。
+  use_quadratic: false
+  use_grid_path: true
+  outline_map: true
+  # 栅格回溯要整数格点。精确偏移开着时，势场已经搜到目标也会抽不出路径。
+  old_navfn_behavior: true
+  lethal_cost: 253
+  neutral_cost: 50
+  cost_factor: 3.0

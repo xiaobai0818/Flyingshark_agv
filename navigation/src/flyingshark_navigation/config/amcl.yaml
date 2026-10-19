@@ -1,0 +1,49 @@
+# 已保存的栅格地图上做粒子滤波定位。只由 navigation.launch 启动。
+# 建图和空白导航仍由 Cartographer 发布 map 到 odom，两套不能同时开。
+
+odom_model_type: diff-corrected
+odom_frame_id: odom
+base_frame_id: base_footprint
+global_frame_id: map
+tf_broadcast: true
+
+update_min_d: 0.08
+update_min_a: 0.15
+resample_interval: 1
+transform_tolerance: 0.5
+gui_publish_rate: 5.0
+save_pose_rate: 0.5
+
+min_particles: 300
+max_particles: 1500
+kld_err: 0.02
+kld_z: 0.99
+recovery_alpha_slow: 0.001
+recovery_alpha_fast: 0.1
+
+# 航向角速度来自 IMU，转弯噪声按这个设，不要按纯轮式打滑来放大。
+odom_alpha1: 0.05
+odom_alpha2: 0.08
+odom_alpha3: 0.15
+odom_alpha4: 0.08
+odom_alpha5: 0.05
+
+laser_min_range: 0.12
+laser_max_range: 8.0
+laser_max_beams: 120
+laser_z_hit: 0.85
+laser_z_short: 0.05
+laser_z_max: 0.05
+laser_z_rand: 0.05
+laser_sigma_hit: 0.15
+laser_lambda_short: 0.1
+laser_likelihood_max_dist: 2.0
+laser_model_type: likelihood_field
+
+# 默认认为车停在建图起点、朝向一致。偏了就在 RViz 里用 2D Pose Estimate。
+initial_pose_x: 0.0
+initial_pose_y: 0.0
+initial_pose_a: 0.0
+initial_cov_xx: 0.25
+initial_cov_yy: 0.25
+initial_cov_aa: 0.1

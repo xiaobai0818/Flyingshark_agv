@@ -1,0 +1,26 @@
+<launch>
+  <arg name="configuration_basename" default="flyingshark_2d.lua"/>
+  <arg name="load_map" default="false"/>
+  <arg name="load_state_filename" default="/home/orangepi/Flyingshark_agv/map/r10.pbstream"/>
+  <arg name="resolution" default="0.05"/>
+  <arg name="mode" default="mapping"/>
+  <arg name="use_wheel_odom" default="true"/>
+  <arg name="map_topic" default="map"/>
+
+  <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" output="screen"
+        unless="$(arg load_map)"
+        args="-configuration_directory $(find flyingshark_slam)/config -configuration_basename $(arg configuration_basename)">
+    <remap from="scan" to="/scan"/>
+    <remap from="odom" to="/odom"/>
+  </node>
+
+  <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" output="screen"
+        if="$(arg load_map)"
+        args="-configuration_directory $(find flyingshark_slam)/config -configuration_basename $(arg configuration_basename) -load_state_filename $(arg load_state_filename)">
+    <remap from="scan" to="/scan"/>
+    <remap from="odom" to="/odom"/>
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node"
+        args="-resolution $(arg resolution) -publish_period_sec 1.0 -occupancy_grid_topic $(arg map_topic)"/>
+</launch>

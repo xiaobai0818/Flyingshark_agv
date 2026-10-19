@@ -1,0 +1,29 @@
+<launch>
+  <!-- Cartographer 从空白开始建图，同时开导航。不要再加载固定空白图。 -->
+  <arg name="open_rviz" default="true"/>
+  <arg name="robot_radius" default="0.108"/>
+  <arg name="local_planner" default="teb"/>
+
+  <arg name="start_drivers" default="true"/>
+
+  <group if="$(arg start_drivers)">
+    <include file="$(find flyingshark_bringup)/launch/bringup.launch">
+      <arg name="start_ekf" value="true"/>
+      <arg name="start_camera" value="true"/>
+      <arg name="chassis_radius" value="$(arg robot_radius)"/>
+    </include>
+  </group>
+
+  <include file="$(find flyingshark_slam)/launch/cartographer.launch">
+    <arg name="mode" value="mapping"/>
+    <arg name="use_wheel_odom" value="true"/>
+  </include>
+
+  <include file="$(find flyingshark_navigation)/launch/move_base.launch">
+    <arg name="local_planner" value="$(arg local_planner)"/>
+    <arg name="robot_radius" value="$(arg robot_radius)"/>
+  </include>
+
+  <node if="$(arg open_rviz)" pkg="rviz" type="rviz" name="rviz"
+        args="-d $(find flyingshark_bringup)/rviz/flyingshark.rviz"/>
+</launch>

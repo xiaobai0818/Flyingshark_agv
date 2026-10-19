@@ -1,0 +1,10 @@
+<launch>
+  <node pkg="flyingshark_bringup" type="height_map_overlay.py" name="height_map_overlay" output="screen">
+    <remap from="map_slam" to="/map_slam"/>
+    <remap from="map" to="/map"/>
+    <remap from="depth_obstacles" to="/camera/depth_obstacles"/>
+    <param name="min_z" value="0.12"/>
+    <param name="max_z" value="0.65"/>
+    <param name="resolution" value="0.05"/>
+  </node>
+</launch>

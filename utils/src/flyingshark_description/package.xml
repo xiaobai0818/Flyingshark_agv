@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>flyingshark_description</name>
+  <version>0.1.0</version>
+  <description>URDF of the Flyingshark R10 differential robot.</description>
+  <maintainer email="orangepi@example.com">orangepi</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <export/>
+</package>

@@ -1,0 +1,6 @@
+<launch>
+  <arg name="port" default="8080"/>
+  <node pkg="flyingshark_webui" type="webui_node.py" name="flyingshark_webui" output="screen">
+    <param name="port" value="$(arg port)"/>
+  </node>
+</launch>

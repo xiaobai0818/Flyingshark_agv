@@ -1,0 +1,36 @@
+robot_radius: 0.108
+footprint_padding: 0.02
+transform_tolerance: 0.8
+
+obstacle_layer:
+  enabled: true
+  observation_sources: scan
+  scan:
+    topic: /scan
+    sensor_frame: laser
+    data_type: LaserScan
+    clearing: true
+    marking: true
+    inf_is_valid: true
+    obstacle_range: 6.0
+    raytrace_range: 8.0
+
+# 只标相机真正看到的床沿、桌沿。不往背后填充，床后面的空地还能绕过去。
+depth_layer:
+  enabled: true
+  combination_method: 1
+  observation_sources: depth
+  depth:
+    topic: /camera/depth_obstacles
+    data_type: PointCloud2
+    marking: true
+    clearing: false
+    min_obstacle_height: 0.12
+    max_obstacle_height: 0.70
+    obstacle_range: 4.5
+    raytrace_range: 4.5
+
+inflation_layer:
+  enabled: true
+  inflation_radius: 0.30
+  cost_scaling_factor: 3.0

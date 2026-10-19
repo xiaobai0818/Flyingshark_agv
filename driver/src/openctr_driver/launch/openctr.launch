@@ -1,0 +1,7 @@
+<launch>
+  <arg name="port" default="auto"/>
+  <node pkg="openctr_driver" type="openctr_driver_node" name="openctr_driver" output="screen" respawn="true" respawn_delay="2">
+    <rosparam file="$(find openctr_driver)/config/openctr.yaml" command="load"/>
+    <param name="port" value="$(arg port)"/>
+  </node>
+</launch>

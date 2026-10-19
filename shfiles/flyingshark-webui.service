@@ -1,0 +1,18 @@
+[Unit]
+Description=Flyingshark web console
+After=network-online.target flyingshark-usbfs.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=orangepi
+Group=orangepi
+WorkingDirectory=/home/orangepi/Flyingshark_agv
+ExecStart=/bin/bash /home/orangepi/Flyingshark_agv/shfiles/webui.sh
+Restart=on-failure
+RestartSec=3
+Environment=HOME=/home/orangepi
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

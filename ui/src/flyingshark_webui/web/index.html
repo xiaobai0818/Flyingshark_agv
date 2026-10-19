@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#14120e">
+  <title>AGV控制台</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside>
+    <div class="brand">AGV控制台</div>
+    <div id="modeLabel">未启动</div>
+    <div class="meters">
+      <span id="bw">0 KB/s</span>
+      <span id="fps">画面 -- · 位姿 --</span>
+    </div>
+    <div id="audioMeters" class="audio-meters">
+      <div class="audio-row"><span>左</span><div class="audio-track"><i id="audioLeft"></i></div></div>
+      <div class="audio-row"><span>右</span><div class="audio-track"><i id="audioRight"></i></div></div>
+    </div>
+    <nav class="modes">
+      <button id="btnInit" type="button" class="fn" data-op="init">初始化</button>
+      <button id="btnBlank" type="button" class="fn" data-op="blank">无地图导航</button>
+      <button id="btnMapping" type="button" class="fn" data-op="mapping">手动建图</button>
+      <button id="btnSave" type="button" class="fn" data-op="save">保存地图</button>
+      <label class="pick">已知地图
+        <span class="pick-row">
+          <select id="mapPick"></select>
+          <button id="btnDeleteMap" type="button" title="删除所选地图">×</button>
+        </span>
+      </label>
+      <button id="btnNav" type="button" class="fn" data-op="nav">已知地图导航</button>
+      <button id="btnReloc" type="button" class="fn" data-op="reloc">重定位</button>
+      <button id="btnGoal" type="button" class="fn" data-op="goal">导航点</button>
+    </nav>
+    <p id="status"></p>
+    <details class="sysops">
+      <summary>系统操作</summary>
+      <div class="sysops-row">
+        <button id="btnReboot" type="button">重启</button>
+        <button id="btnShutdown" type="button">关机</button>
+      </div>
+    </details>
+    <div class="drive">
+      <button id="openSettings" type="button" class="settings-btn">设置</button>
+      <p class="hint">摇杆和键盘共用手动速度，松手即停。</p>
+      <div id="stick" class="stick"><div id="knob"></div></div>
+    </div>
+  </aside>
+  <div id="splitter" title="拖动调整侧栏宽度"></div>
+  <section class="stage" id="stage">
+    <div class="main-slot" id="slotMain">
+      <div class="view-3d" id="view3d">
+        <canvas id="map"></canvas>
+        <div class="map-tools">
+          <button id="follow" type="button" class="on">跟随</button>
+          <button id="zin" type="button">+</button>
+          <button id="zout" type="button">−</button>
+        </div>
+        <div class="legend">长轴是地图坐标，短轴是本次初始位姿。红 X、绿 Y、蓝 Z。青激光，紫点云。</div>
+        <div id="mapInfo" class="map-info">等待地图</div>
+      </div>
+    </div>
+    <div class="pip" id="pip">
+      <button id="swap" type="button" title="和主画面切换">+</button>
+      <div class="pip-frame" id="pipFrame">
+        <section class="video-wrap" id="viewRgb">
+          <img id="cam" alt="RGB 图像">
+          <div class="cap">RGB</div>
+          <div id="offline">当前无法查看</div>
+          <div id="pipResize" title="拖动缩放"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+  <div id="settings" class="settings" hidden>
+    <div class="settings-head">
+      <span>设置</span>
+      <button id="closeSettings" type="button">×</button>
+    </div>
+    <label class="ios">
+      <span>键盘控制</span>
+      <span class="switch">
+        <input id="keyEnable" type="checkbox" checked>
+        <i></i>
+      </span>
+    </label>
+    <label>键盘线速度 <b id="teleopVVal">0.25</b>
+      <input id="teleopV" type="range" min="0.05" max="0.60" step="0.01" value="0.25">
+    </label>
+    <label>键盘角速度 <b id="teleopWVal">0.80</b>
+      <input id="teleopW" type="range" min="0.20" max="1.50" step="0.05" value="0.80">
+    </label>
+    <label>导航线速度 <b id="navVVal">0.35</b>
+      <input id="navV" type="range" min="0.05" max="0.60" step="0.01" value="0.35">
+    </label>
+    <label>导航角速度 <b id="navWVal">1.00</b>
+      <input id="navW" type="range" min="0.20" max="1.50" step="0.05" value="1.00">
+    </label>
+  </div>
+  <script src="view3d.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

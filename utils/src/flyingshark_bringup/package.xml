@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>flyingshark_bringup</name>
+  <version>0.1.0</version>
+  <description>Sensor bringup, EKF and top-level launches for Flyingshark.</description>
+  <maintainer email="orangepi@example.com">orangepi</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
+  <exec_depend>twist_mux</exec_depend>
+  <export/>
+</package>

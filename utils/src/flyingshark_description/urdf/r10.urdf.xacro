@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<robot name="flyingshark_r10" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="chassis_radius" default="0.108"/>
+  <xacro:arg name="wheel_radius" default="0.037"/>
+  <xacro:arg name="wheel_separation" default="0.164"/>
+  <xacro:arg name="lidar_x" default="0.06"/>
+  <xacro:arg name="lidar_y" default="0.0"/>
+  <xacro:arg name="lidar_z" default="0.105"/>
+  <xacro:arg name="lidar_yaw" default="0.0"/>
+  <xacro:arg name="camera_x" default="0.055"/>
+  <xacro:arg name="camera_y" default="0.0"/>
+  <xacro:arg name="camera_z" default="0.160"/>
+  <xacro:arg name="camera_yaw" default="0.0"/>
+  <xacro:arg name="camera_pitch" default="0.0"/>
+
+  <xacro:property name="chassis_radius" value="$(arg chassis_radius)"/>
+  <xacro:property name="wheel_radius" value="$(arg wheel_radius)"/>
+  <xacro:property name="wheel_separation" value="$(arg wheel_separation)"/>
+  <xacro:property name="lidar_x" value="$(arg lidar_x)"/>
+  <xacro:property name="lidar_y" value="$(arg lidar_y)"/>
+  <xacro:property name="lidar_z" value="$(arg lidar_z)"/>
+  <xacro:property name="lidar_yaw" value="$(arg lidar_yaw)"/>
+  <xacro:property name="camera_x" value="$(arg camera_x)"/>
+  <xacro:property name="camera_y" value="$(arg camera_y)"/>
+  <xacro:property name="camera_z" value="$(arg camera_z)"/>
+  <xacro:property name="camera_yaw" value="$(arg camera_yaw)"/>
+  <xacro:property name="camera_pitch" value="$(arg camera_pitch)"/>
+
+  <link name="base_footprint"/>
+
+  <joint name="base_link_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+  </joint>
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${chassis_radius}" length="0.04"/>
+      </geometry>
+      <material name="chassis_blue">
+        <color rgba="0.15 0.35 0.65 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="left_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <origin xyz="0 ${wheel_separation/2} 0" rpy="1.5708 0 0"/>
+  </joint>
+  <link name="left_wheel">
+    <visual>
+      <geometry><cylinder radius="${wheel_radius}" length="0.03"/></geometry>
+      <material name="wheel_black"><color rgba="0.1 0.1 0.1 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="right_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <origin xyz="0 ${-wheel_separation/2} 0" rpy="1.5708 0 0"/>
+  </joint>
+  <link name="right_wheel">
+    <visual>
+      <geometry><cylinder radius="${wheel_radius}" length="0.03"/></geometry>
+      <material name="wheel_black"/>
+    </visual>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_imu_link"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+  </joint>
+  <link name="base_imu_link"/>
+
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="laser"/>
+    <origin xyz="${lidar_x} ${lidar_y} ${lidar_z}" rpy="0 0 ${lidar_yaw}"/>
+  </joint>
+  <link name="laser">
+    <visual>
+      <geometry><cylinder radius="0.035" length="0.04"/></geometry>
+      <material name="lidar_red"><color rgba="0.8 0.15 0.15 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="camera_link"/>
+    <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 ${camera_pitch} ${camera_yaw}"/>
+  </joint>
+  <link name="camera_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="0.09 0.03 0.025"/></geometry>
+      <material name="camera_black"><color rgba="0.05 0.05 0.05 1"/></material>
+    </visual>
+  </link>
+</robot>

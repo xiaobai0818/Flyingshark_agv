@@ -1,0 +1,18 @@
+<launch>
+  <arg name="use_wheel_odom" default="true"/>
+  <arg name="open_rviz" default="false"/>
+  <arg name="start_drivers" default="true"/>
+
+  <group if="$(arg start_drivers)">
+    <include file="$(find flyingshark_bringup)/launch/bringup.launch">
+      <arg name="start_ekf" value="$(arg use_wheel_odom)"/>
+    </include>
+  </group>
+
+  <include file="$(find flyingshark_slam)/launch/cartographer.launch">
+    <arg name="mode" value="mapping"/>
+    <arg name="use_wheel_odom" value="$(arg use_wheel_odom)"/>
+  </include>
+
+  <node if="$(arg open_rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find flyingshark_bringup)/rviz/flyingshark.rviz"/>
+</launch>

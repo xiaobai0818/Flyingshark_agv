@@ -1,0 +1,22 @@
+# 这块 B20 实测上行帧是 0xAA 0x55、类型 0x10，波特率 230400。
+port: auto
+baud_rate: 230400
+protocol: auto
+publish_tf: false
+odom_frame: odom
+base_frame: base_footprint
+imu_frame: base_imu_link
+control_rate: 25.0
+cmd_timeout: 0.5
+# 轮径/打滑的比例修正。大于 1 表示真实位移比下位机报的更大。
+linear_scale: 1.0
+angular_scale: 1.0
+# 轮式里程计故意不可靠：线速度还能用，角速度更容易打滑，航向主要交给 IMU。
+wheel_vx_variance: 0.05
+wheel_wz_variance: 0.25
+gyro_z_variance: 0.01
+calibrate_gyro_bias: true
+gyro_bias_seconds: 2.0
+kp: 300
+ki: 0
+kd: 200

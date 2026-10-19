@@ -1,0 +1,54 @@
+<launch>
+  <arg name="lidar_port" default="/dev/ldlidar"/>
+  <arg name="base_port" default="auto"/>
+  <arg name="start_ekf" default="true"/>
+  <arg name="start_camera" default="true"/>
+  <arg name="start_lidar" default="true"/>
+  <arg name="chassis_radius" default="0.108"/>
+
+  <include file="$(find flyingshark_description)/launch/description.launch">
+    <arg name="chassis_radius" value="$(arg chassis_radius)"/>
+    <arg name="lidar_x" value="0.06"/>
+    <arg name="lidar_z" value="0.105"/>
+    <arg name="camera_x" value="0.055"/>
+    <arg name="camera_z" value="0.160"/>
+  </include>
+
+  <include file="$(find openctr_driver)/launch/openctr.launch">
+    <arg name="port" value="$(arg base_port)"/>
+  </include>
+
+  <group if="$(arg start_lidar)">
+    <include file="$(find ldlidar_stl_ros)/launch/ld06.launch">
+      <arg name="topic_name" value="scan_raw"/>
+      <arg name="frame_id" value="laser"/>
+      <arg name="port_name" value="$(arg lidar_port)"/>
+      <arg name="port_baudrate" value="230400"/>
+      <arg name="fix_to_base_link" value="false"/>
+    </include>
+    <node pkg="flyingshark_bringup" type="scan_filter.py" name="scan_filter" output="screen">
+      <param name="min_range" value="0.08"/>
+      <param name="max_range" value="8.0"/>
+      <!-- 雷达在车心前方 60mm，斜后方两根铝柱大约落在 120°~240° -->
+      <param name="enable_angle_crop" value="true"/>
+      <param name="angle_crop_min_deg" value="120.0"/>
+      <param name="angle_crop_max_deg" value="240.0"/>
+    </node>
+  </group>
+
+  <group if="$(arg start_camera)">
+    <include file="$(find flyingshark_bringup)/launch/camera.launch"/>
+  </group>
+
+  <group if="$(arg start_ekf)">
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" output="screen" respawn="true">
+      <rosparam file="$(find flyingshark_bringup)/config/ekf.yaml" command="load"/>
+      <remap from="odometry/filtered" to="/odom"/>
+    </node>
+  </group>
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
+    <rosparam file="$(find flyingshark_bringup)/config/twist_mux.yaml" command="load"/>
+    <remap from="cmd_vel_out" to="cmd_vel"/>
+  </node>
+</launch>

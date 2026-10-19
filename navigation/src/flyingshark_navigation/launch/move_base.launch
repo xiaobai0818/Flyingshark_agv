@@ -1,0 +1,24 @@
+<launch>
+  <arg name="local_planner" default="teb"/>
+  <arg name="robot_radius" default="0.108"/>
+
+  <node pkg="move_base" type="move_base" name="move_base" output="screen" respawn="true" respawn_delay="2">
+    <rosparam file="$(find flyingshark_navigation)/config/move_base.yaml" command="load"/>
+    <rosparam file="$(find flyingshark_navigation)/config/global_planner.yaml" command="load"/>
+    <rosparam file="$(find flyingshark_navigation)/config/global_costmap.yaml" command="load"/>
+    <rosparam file="$(find flyingshark_navigation)/config/local_costmap.yaml" command="load"/>
+    <rosparam file="$(find flyingshark_navigation)/config/costmap_common.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find flyingshark_navigation)/config/costmap_common.yaml" command="load" ns="local_costmap"/>
+    <param name="global_costmap/robot_radius" value="$(arg robot_radius)"/>
+    <param name="local_costmap/robot_radius" value="$(arg robot_radius)"/>
+
+    <rosparam if="$(eval arg('local_planner') == 'teb')" file="$(find flyingshark_navigation)/config/teb.yaml" command="load"/>
+    <param if="$(eval arg('local_planner') == 'teb')" name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS"/>
+    <param if="$(eval arg('local_planner') == 'teb')" name="TebLocalPlannerROS/footprint_model/radius" value="$(arg robot_radius)"/>
+
+    <rosparam if="$(eval arg('local_planner') == 'dwa')" file="$(find flyingshark_navigation)/config/dwa.yaml" command="load"/>
+    <param if="$(eval arg('local_planner') == 'dwa')" name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+
+    <remap from="cmd_vel" to="nav_cmd_vel"/>
+  </node>
+</launch>

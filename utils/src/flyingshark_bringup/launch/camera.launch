@@ -1,0 +1,35 @@
+<launch>
+  <!-- Astra Pro：深度点云 /camera/depth/points，彩色点云 /camera/depth_registered/points -->
+  <include file="$(find astra_camera)/launch/astra_pro.launch">
+    <arg name="camera_name" value="camera"/>
+    <arg name="depth_align" value="true"/>
+    <arg name="enable_point_cloud" value="true"/>
+    <arg name="enable_point_cloud_xyzrgb" value="true"/>
+    <arg name="enable_color" value="true"/>
+    <arg name="enable_depth" value="true"/>
+    <arg name="enable_ir" value="false"/>
+    <arg name="color_width" value="640"/>
+    <arg name="color_height" value="480"/>
+    <arg name="color_fps" value="15"/>
+    <arg name="depth_width" value="640"/>
+    <arg name="depth_height" value="480"/>
+    <arg name="depth_fps" value="15"/>
+    <arg name="use_uvc_camera" value="true"/>
+    <arg name="uvc_vendor_id" value="0x2bc5"/>
+    <arg name="uvc_product_id" value="0x0501"/>
+    <arg name="publish_tf" value="true"/>
+    <arg name="color_info_uri" value="file:///home/orangepi/Flyingshark_agv/utils/src/flyingshark_bringup/config/astra_rgb.yaml"/>
+  </include>
+  <node pkg="flyingshark_bringup" type="rgb_cloud_downsample.py" name="rgb_cloud_downsample" output="screen">
+    <remap from="depth_registered/points" to="/camera/depth_registered/points"/>
+    <remap from="rgb_points" to="/camera/rgb_points"/>
+    <param name="stride" value="4"/>
+  </node>
+  <node pkg="flyingshark_bringup" type="depth_cloud_downsample.py" name="depth_cloud_downsample" output="screen">
+    <remap from="depth/points" to="/camera/depth/points"/>
+    <remap from="depth_obstacles" to="/camera/depth_obstacles"/>
+    <param name="stride" value="4"/>
+    <param name="min_z" value="0.12"/>
+    <param name="max_z" value="0.65"/>
+  </node>
+</launch>

@@ -1,0 +1,10 @@
+# 所有板载串口自动给 orangepi（dialout）读写权限
+KERNEL=="ttyS[0-9]*", GROUP="dialout", MODE="0666"
+KERNEL=="ttyFIQ[0-9]*", GROUP="dialout", MODE="0666"
+KERNEL=="ttyUSB[0-9]*", GROUP="dialout", MODE="0666"
+KERNEL=="ttyACM[0-9]*", GROUP="dialout", MODE="0666"
+
+# 底盘 OpenCTR 接 40pin UART2：物理脚 8=TX，10=RX
+SUBSYSTEM=="tty", KERNEL=="ttyS2", SYMLINK+="openctr", GROUP="dialout", MODE="0666"
+# LD06 接 40pin UART6：物理脚 13=TX，11=RX
+SUBSYSTEM=="tty", KERNEL=="ttyS6", SYMLINK+="ldlidar", GROUP="dialout", MODE="0666"

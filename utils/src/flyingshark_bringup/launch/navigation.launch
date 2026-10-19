@@ -1,0 +1,31 @@
+<launch>
+  <arg name="map_file" default="/home/orangepi/Flyingshark_agv/map/r10.yaml"/>
+  <arg name="local_planner" default="teb"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="robot_radius" default="0.108"/>
+
+  <arg name="start_drivers" default="true"/>
+
+  <group if="$(arg start_drivers)">
+    <include file="$(find flyingshark_bringup)/launch/bringup.launch">
+      <arg name="start_ekf" value="true"/>
+      <arg name="chassis_radius" value="$(arg robot_radius)"/>
+    </include>
+  </group>
+
+  <!-- 读冻结的栅格地图。AMCL 独占 map 到 odom，这里不再开 Cartographer。 -->
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)"/>
+
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <rosparam file="$(find flyingshark_navigation)/config/amcl.yaml" command="load"/>
+    <remap from="scan" to="/scan"/>
+    <remap from="odom" to="/odom"/>
+  </node>
+
+  <include file="$(find flyingshark_navigation)/launch/move_base.launch">
+    <arg name="local_planner" value="$(arg local_planner)"/>
+    <arg name="robot_radius" value="$(arg robot_radius)"/>
+  </include>
+
+  <node if="$(arg open_rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find flyingshark_bringup)/rviz/flyingshark.rviz"/>
+</launch>

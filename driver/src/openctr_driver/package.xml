@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>openctr_driver</name>
+  <version>0.1.0</version>
+  <description>OpenCTR B20 differential-drive driver for the Flyingshark R10.</description>
+  <maintainer email="orangepi@example.com">orangepi</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>serial</depend>
+  <export/>
+</package>

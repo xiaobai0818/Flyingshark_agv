@@ -1,0 +1,20 @@
+<launch>
+  <arg name="chassis_radius" default="0.108"/>
+  <arg name="lidar_x" default="0.06"/>
+  <arg name="lidar_y" default="0.0"/>
+  <arg name="lidar_z" default="0.105"/>
+  <arg name="lidar_yaw" default="0.0"/>
+  <arg name="camera_x" default="0.055"/>
+  <arg name="camera_y" default="0.0"/>
+  <arg name="camera_z" default="0.160"/>
+  <arg name="camera_yaw" default="0.0"/>
+  <arg name="camera_pitch" default="0.0"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find flyingshark_description)/urdf/r10.urdf.xacro
+    chassis_radius:=$(arg chassis_radius)
+    lidar_x:=$(arg lidar_x) lidar_y:=$(arg lidar_y) lidar_z:=$(arg lidar_z) lidar_yaw:=$(arg lidar_yaw)
+    camera_x:=$(arg camera_x) camera_y:=$(arg camera_y) camera_z:=$(arg camera_z)
+    camera_yaw:=$(arg camera_yaw) camera_pitch:=$(arg camera_pitch)"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher"/>
+</launch>

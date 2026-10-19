@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>flyingshark_slam</name>
+  <version>0.1.0</version>
+  <description>Cartographer 2D mapping and laser localization for Flyingshark R10.</description>
+  <maintainer email="orangepi@example.com">orangepi</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>cartographer_ros</exec_depend>
+  <export/>
+</package>
