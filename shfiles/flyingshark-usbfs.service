@@ -1,0 +1,12 @@
+[Unit]
+Description=Increase usbfs buffer for Orbbec Astra Pro
+DefaultDependencies=no
+After=systemd-udevd.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo 128 > /sys/module/usbcore/parameters/usbfs_memory_mb'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
